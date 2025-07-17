@@ -1,5 +1,11 @@
-<div>
-  <input type="text" placeholder="Search Your City" [ngModel]="searchTerm" onchange="searchCity($event)"/>
+<div class="w-full flex justify-center">
+  <input
+    class="bg-blue-200 rounded-sm"
+    type="text"
+    placeholder="Search Your City..."
+    [ngModel]="searchTerm"
+    onchange="searchCity($event)"
+  />
   @if (dropDownShow()) {
   <ul>
     @for (city of cityList(); track $index) {
