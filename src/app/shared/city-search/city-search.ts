@@ -1,10 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { Component, ElementRef, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { fromEvent } from 'rxjs';
-
 @Component({
   selector: 'app-city-search',
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './city-search.html',
   styleUrl: './city-search.scss',
 })
