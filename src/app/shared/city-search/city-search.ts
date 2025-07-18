@@ -13,15 +13,25 @@ export class CitySearch {
     viewChild.required<ElementRef<HTMLInputElement>>('searchBox');
   protected showDropdown = signal<boolean>(false);
   protected cityList = signal<any[]>([
-    'Yazd',
-    'Mashad',
-    'Shiraz',
-    'Isfahan',
-    'Tehran',
+    { city: 'Tokyo', country: 'Japan' },
+    { city: 'Paris', country: 'France' },
+    { city: 'Sydney', country: 'Australia' },
+    { city: 'Rio de Janeiro', country: 'Brazil' },
+    { city: 'Cairo', country: 'Egypt' },
+    { city: 'Toronto', country: 'Canada' },
+    { city: 'Berlin', country: 'Germany' },
+    { city: 'Bangkok', country: 'Thailand' },
+    { city: 'Nairobi', country: 'Kenya' },
+    { city: 'Rome', country: 'Italy' },
+    { city: 'New York', country: 'USA' },
+    { city: 'Moscow', country: 'Russia' },
+    { city: 'Dubai', country: 'UAE' },
+    { city: 'Buenos Aires', country: 'Argentina' },
+    { city: 'Seoul', country: 'South Korea' },
   ]);
   protected searchTerm!: string;
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     fromEvent(this.searchBox().nativeElement, 'focus').subscribe(() => {
       this.showDropdown.set(true);
     });

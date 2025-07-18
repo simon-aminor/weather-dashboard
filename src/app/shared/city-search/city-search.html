@@ -1,17 +1,26 @@
-<div class="w-full flex justify-center py-5">
-  <input
-    #searchBox
-    class="w-64 bg-blue-200 hover:bg-blue-300 focus:bg-blue-300 rounded-sm p-3 border-solid"
-    type="text"
-    placeholder="Search Your City..."
-    [ngModel]="searchTerm"
-    onchange="searchCity($event)"
-  />
-  @if (showDropdown()) {
-  <ul>
-    @for (city of cityList(); track $index) {
-    <li>{{ city.name }},{{ city.country }}</li>
+<div
+  class="w-full flex justify-center py-5 bg-gradient-to-b from-sky-200 to-blue-300"
+>
+  <div class="relative w-[15vw] flex flex-col gap-2">
+    <input
+      #searchBox
+      class="w-full bg-white focus:bg-sky-100 hover:bg-sky-200 text-sky-900 placeholder:text-sky-500 border border-sky-400 rounded-md p-3 text-lg shadow-sm"
+      type="text"
+      placeholder="Search Your City..."
+      [ngModel]="searchTerm"
+      onchange="searchCity($event)"
+    />
+
+    @if (showDropdown()) {
+    <ul
+      class="absolute top-full mt-1 z-10 w-full max-h-[200px] bg-white text-sky-800 border border-sky-300 rounded-md shadow-md overflow-y-auto"
+    >
+      @for (city of cityList(); track $index) {
+      <li class="p-2 hover:bg-sky-100 cursor-pointer">
+        {{ city.city }}, {{ city.country }}
+      </li>
+      }
+    </ul>
     }
-  </ul>
-  }
+  </div>
 </div>
