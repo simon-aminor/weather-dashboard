@@ -1,12 +1,13 @@
-<div class="w-full flex justify-center">
+<div class="w-full flex justify-center py-5">
   <input
-    class="bg-blue-200 rounded-sm"
+    #searchBox
+    class="w-64 bg-blue-200 hover:bg-blue-300 focus:bg-blue-300 rounded-sm p-3 border-solid"
     type="text"
     placeholder="Search Your City..."
     [ngModel]="searchTerm"
     onchange="searchCity($event)"
   />
-  @if (dropDownShow()) {
+  @if (showDropdown()) {
   <ul>
     @for (city of cityList(); track $index) {
     <li>{{ city.name }},{{ city.country }}</li>
