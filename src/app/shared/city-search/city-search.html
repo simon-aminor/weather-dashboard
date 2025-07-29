@@ -8,7 +8,6 @@
       type="text"
       placeholder="Search Your City..."
       [ngModel]="searchTerm()"
-      (change)="searchCity($event)"
     />
 
     @if (showDropdown()) {
@@ -17,12 +16,12 @@
       [class.animate.slide-fade-in]="showDropdown()"
       [class.animate.slide-fade-out]="!showDropdown()"
     >
-      @for (city of cityList(); track $index) {
+      @for (zone of filteredZones(); track $index) {
       <li
         class="p-2 hover:bg-sky-100 cursor-pointer"
-        (click)="setSearchedValue(city)"
+        (click)="setSearchedValue(zone)"
       >
-        {{ city.city }}, {{ city.country }}
+        {{ zone.city }}, {{ zone.country }}
       </li>
       }
     </ul>

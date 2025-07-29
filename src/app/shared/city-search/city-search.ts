@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { fromEvent } from 'rxjs';
+import { debounceTime, fromEvent } from 'rxjs';
 @Component({
   selector: 'app-city-search',
   imports: [FormsModule, CommonModule],
@@ -12,7 +12,9 @@ export class CitySearch {
   protected searchBox =
     viewChild.required<ElementRef<HTMLInputElement>>('searchBox');
   protected showDropdown = signal<boolean>(false);
-  protected cityList = signal<City[]>([
+  protected searchTerm = signal<string | null>(null);
+  protected filteredZones = signal<Zone[]>([]);
+  protected zoneList = signal<Zone[]>([
     { city: 'Tokyo', country: 'Japan' },
     { city: 'Paris', country: 'France' },
     { city: 'Sydney', country: 'Australia' },
@@ -29,27 +31,38 @@ export class CitySearch {
     { city: 'Buenos Aires', country: 'Argentina' },
     { city: 'Seoul', country: 'South Korea' },
   ]);
-  protected searchTerm = signal<string | null>(null);
 
   ngOnInit(): void {
+    const inputEl = this.searchBox().nativeElement;
+
     fromEvent(this.searchBox().nativeElement, 'focus').subscribe(() => {
       this.showDropdown.set(true);
     });
     fromEvent(this.searchBox().nativeElement, 'blur').subscribe(() => {
       setTimeout(() => this.showDropdown.set(false), 200);
     });
+
+    fromEvent(inputEl, 'input')
+      .pipe(debounceTime(300))
+      .subscribe(() => {
+        const term = inputEl.value.trim().toLowerCase();
+        this.searchTerm.set(term);
+
+        // filter cities
+        const result = this.zoneList().filter((zone) =>
+          zone.city.toLowerCase().includes(term)
+        );
+        this.filteredZones.set(result);
+        console.log(this.filteredZones());
+      });
   }
 
-  setSearchedValue(city: City) {
-    console.log(city);
-    this.searchTerm.set(`${city.city}, ${city.country}`);
-  }
-
-  searchCity(e: Event) {
-    console.log(e);
+  setSearchedValue(zone: Zone) {
+    console.log(zone);
+    this.searchTerm.set(`${zone.city}, ${zone.country}`);
   }
 }
-interface City {
+interface Zone {
   city: string;
   country: string;
 }
