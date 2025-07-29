@@ -12,7 +12,7 @@ export class CitySearch {
   protected searchBox =
     viewChild.required<ElementRef<HTMLInputElement>>('searchBox');
   protected showDropdown = signal<boolean>(false);
-  protected cityList = signal<any[]>([
+  protected cityList = signal<City[]>([
     { city: 'Tokyo', country: 'Japan' },
     { city: 'Paris', country: 'France' },
     { city: 'Sydney', country: 'Australia' },
@@ -29,7 +29,7 @@ export class CitySearch {
     { city: 'Buenos Aires', country: 'Argentina' },
     { city: 'Seoul', country: 'South Korea' },
   ]);
-  protected searchTerm!: string;
+  protected searchTerm = signal<string | null>(null);
 
   ngOnInit(): void {
     fromEvent(this.searchBox().nativeElement, 'focus').subscribe(() => {
@@ -40,7 +40,16 @@ export class CitySearch {
     });
   }
 
+  setSearchedValue(city: City) {
+    console.log(city);
+    this.searchTerm.set(`${city.city}, ${city.country}`);
+  }
+
   searchCity(e: Event) {
     console.log(e);
   }
+}
+interface City {
+  city: string;
+  country: string;
 }

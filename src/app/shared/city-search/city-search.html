@@ -1,5 +1,5 @@
 <div
-  class="w-full flex justify-center py-5 bg-gradient-to-b from-sky-200 to-blue-300"
+  class="w-full flex justify-center py-5 bg-gradient-to-b from-sky-100 to-blue-200 shadow-lg"
 >
   <div class="relative w-[15vw] flex flex-col gap-2">
     <input
@@ -7,8 +7,8 @@
       class="w-full bg-white focus:bg-sky-100 hover:bg-sky-200 text-sky-900 placeholder:text-sky-500 border border-sky-400 rounded-md p-3 text-lg shadow-sm"
       type="text"
       placeholder="Search Your City..."
-      [ngModel]="searchTerm"
-      onchange="searchCity($event)"
+      [ngModel]="searchTerm()"
+      (change)="searchCity($event)"
     />
 
     @if (showDropdown()) {
@@ -18,7 +18,10 @@
       [class.animate.slide-fade-out]="!showDropdown()"
     >
       @for (city of cityList(); track $index) {
-      <li class="p-2 hover:bg-sky-100 cursor-pointer">
+      <li
+        class="p-2 hover:bg-sky-100 cursor-pointer"
+        (click)="setSearchedValue(city)"
+      >
         {{ city.city }}, {{ city.country }}
       </li>
       }
