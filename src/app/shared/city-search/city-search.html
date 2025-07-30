@@ -10,11 +10,10 @@
       [ngModel]="searchTerm()"
     />
 
-    @if (showDropdown()) {
+    <!-- @if (showDropdown()) { -->
     <ul
-      class="absolute top-full mt-1 z-10 w-full max-h-[200px] bg-white text-sky-800 border border-sky-300 rounded-md shadow-md overflow-y-auto"
-      [class.animate.slide-fade-in]="showDropdown()"
-      [class.animate.slide-fade-out]="!showDropdown()"
+      #dropDown
+      class="absolute top-full mt-1 z-10 w-full max-h-[200px] bg-white text-sky-800 border border-sky-300 rounded-md shadow-md overflow-y-auto transition-all duration-200 ease-in-out opacity-0 translate-y-2 h-0"
     >
       @for (zone of filteredZones(); track $index) {
       <li
@@ -25,6 +24,6 @@
       </li>
       }
     </ul>
-    }
+    <!-- } -->
   </div>
 </div>

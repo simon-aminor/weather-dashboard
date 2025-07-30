@@ -15,16 +15,33 @@ export class CitySearch {
   protected searchTerm = signal<string | null>(null);
   protected filteredZones = signal<Zone[]>(Zones);
   protected zoneList = signal<Zone[]>(Zones);
+  protected dropDown = viewChild<ElementRef<HTMLInputElement>>('dropDown');
 
   ngAfterViewInit(): void {
     const inputEl = this.searchBox().nativeElement;
+    const dropDownEl = this.dropDown()?.nativeElement;
 
     fromEvent(this.searchBox().nativeElement, 'focus').subscribe(() => {
       this.showDropdown.set(true);
+      if (dropDownEl) {
+        dropDownEl.classList.remove('h-0');
+        dropDownEl.classList.remove('opacity-0');
+        dropDownEl.classList.add('opacity-100');
+        dropDownEl.classList.add('translate-y-0');
+        dropDownEl.classList.add('h-[300px]');
+      }
     });
 
     fromEvent(this.searchBox().nativeElement, 'blur').subscribe(() => {
-      setTimeout(() => this.showDropdown.set(false), 200);
+      setTimeout(() => {
+        this.showDropdown.set(false);
+        if (dropDownEl) {
+          dropDownEl.classList.remove('h-[300px]');
+          dropDownEl.classList.remove('opacity-100');
+          dropDownEl.classList.add('opacity-0');
+          dropDownEl.classList.add('h-0');
+        }
+      }, 200);
     });
 
     fromEvent(inputEl, 'input')
