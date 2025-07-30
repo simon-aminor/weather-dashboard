@@ -28,7 +28,7 @@ export class CitySearch {
         dropDownEl.classList.remove('opacity-0');
         dropDownEl.classList.add('opacity-100');
         dropDownEl.classList.add('translate-y-0');
-        dropDownEl.classList.add('h-[300px]');
+        dropDownEl.classList.add('h-[310px]');
       }
     });
 
@@ -36,12 +36,12 @@ export class CitySearch {
       setTimeout(() => {
         this.showDropdown.set(false);
         if (dropDownEl) {
-          dropDownEl.classList.remove('h-[300px]');
+          dropDownEl.classList.remove('h-[310px]');
           dropDownEl.classList.remove('opacity-100');
           dropDownEl.classList.add('opacity-0');
           dropDownEl.classList.add('h-0');
         }
-      }, 200);
+      }, 100);
     });
 
     fromEvent(inputEl, 'input')
@@ -55,12 +55,10 @@ export class CitySearch {
           zone.city.toLowerCase().includes(term)
         );
         this.filteredZones.set(result);
-        console.log(this.filteredZones());
       });
   }
 
   setSearchedValue(zone: Zone) {
-    console.log(zone);
     this.searchTerm.set(`${zone.city}, ${zone.country}`);
   }
 }
