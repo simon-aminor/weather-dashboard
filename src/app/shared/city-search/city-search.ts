@@ -24,11 +24,20 @@ export class CitySearch {
     fromEvent(this.searchBox().nativeElement, 'focus').subscribe(() => {
       this.showDropdown.set(true);
       if (dropDownEl) {
-        dropDownEl.classList.remove('h-0');
-        dropDownEl.classList.remove('opacity-0');
-        dropDownEl.classList.add('opacity-100');
-        dropDownEl.classList.add('translate-y-0');
-        dropDownEl.classList.add('h-[310px]');
+        dropDownEl.classList.remove(
+          'opacity-0',
+          'invisible',
+          'pointer-events-none',
+          'h-0',
+          'translate-y-2'
+        );
+        dropDownEl.classList.add(
+          'opacity-100',
+          'visible',
+          'pointer-events-auto',
+          'translate-y-0',
+          'max-h-[calc(5*2.5rem)]'
+        );
       }
     });
 
@@ -36,10 +45,21 @@ export class CitySearch {
       setTimeout(() => {
         this.showDropdown.set(false);
         if (dropDownEl) {
-          dropDownEl.classList.remove('h-[310px]');
-          dropDownEl.classList.remove('opacity-100');
-          dropDownEl.classList.add('opacity-0');
-          dropDownEl.classList.add('h-0');
+          dropDownEl.classList.remove(
+            'opacity-100',
+            'visible',
+            'pointer-events-auto',
+            'max-h-[calc(5*2.5rem)]',
+            'translate-y-0'
+          );
+          dropDownEl.classList.add('opacity-0', 'translate-y-2');
+          setTimeout(() => {
+            dropDownEl.classList.add(
+              'invisible',
+              'pointer-events-none',
+              'max-h-0'
+            );
+          }, 100);
         }
       }, 100);
     });
