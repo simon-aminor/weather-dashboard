@@ -73,12 +73,13 @@ export class CitySearch {
   }
 
   setSearchedValue(zone: Zone) {
-    this.searchTerm.set(`${zone.city}, ${zone.country}`);
+    this.searchTerm.set(`${zone.name}, ${zone.country}`);
   }
 }
 interface Zone {
-  city: string;
+  name: string;
   lat: number;
   lon: number;
-  country: string;
+  country: string; // short form e.g US
+  state: string;
 }
