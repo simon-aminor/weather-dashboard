@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
+  effect,
   ElementRef,
   inject,
+  output,
   signal,
   viewChild,
 } from '@angular/core';
@@ -10,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { debounceTime, fromEvent, map, switchMap } from 'rxjs';
 import { CitySearchService } from './city-search.service';
 @Component({
-  selector: 'app-city-search',
+  selector: 'city-search',
   imports: [FormsModule, CommonModule],
   templateUrl: './city-search.html',
   styleUrl: './city-search.scss',
@@ -18,21 +20,21 @@ import { CitySearchService } from './city-search.service';
 })
 export class CitySearch {
   private readonly citySearch = inject(CitySearchService);
+
   protected searchBox =
     viewChild.required<ElementRef<HTMLInputElement>>('searchBox');
-  protected showDropdown = signal<boolean>(false);
-  protected searchTerm = signal<string | null>(null);
-  protected filteredZones = signal<Zone[]>([]);
-  protected zoneList = signal<Zone[]>([]);
   protected dropDown = viewChild<ElementRef<HTMLInputElement>>('dropDown');
+
+  protected zoneList = signal<Zone[]>([]);
+  protected filteredZones = signal<Zone[]>([]);
+  protected searchTerm = signal<string | null>(null);
+  protected showDropdown = signal<boolean>(false);
+  protected readonly selectedCity = output<Zone>;
+
+  #effect = effect(() => {});
 
   async ngOnInit(): Promise<void> {
     await this.fillInitailList();
-  }
-
-  async fillInitailList() {
-    const initailCityList = await this.citySearch.getCityList('london');
-    this.zoneList.set(initailCityList);
   }
 
   ngAfterViewInit(): void {
@@ -72,8 +74,15 @@ export class CitySearch {
       });
   }
 
+  async fillInitailList() {
+    const initailCityList = await this.citySearch.getCityList('Iran');
+    this.zoneList.set(initailCityList);
+    this.filteredZones.set(this.zoneList());
+  }
+
   setSearchedValue(zone: Zone) {
     this.searchTerm.set(`${zone.name}, ${zone.country}`);
+    this.selectedCity(zone);
   }
 }
 interface Zone {
@@ -81,5 +90,5 @@ interface Zone {
   lat: number;
   lon: number;
   country: string; // short form e.g US
-  state: string;
+  state?: string;
 }

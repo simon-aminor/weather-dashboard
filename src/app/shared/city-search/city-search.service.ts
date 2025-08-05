@@ -8,7 +8,7 @@ export class CitySearchService {
   private readonly http = inject(HttpClient);
 
   async getCityList(searchKey: string): Promise<any> {
-    const urlAdress = `${environment.apiBaseUrl}geo/1.0/direct?q=${searchKey}&limit=20&appid=${environment.openWeatherMapApiKey}`;
+    const urlAdress = `${environment.apiBaseUrl}geo/1.0/direct?q=${searchKey}&limit=10&appid=${environment.openWeatherMapApiKey}`;
     const cityList = await firstValueFrom(this.http.get(urlAdress));
     return cityList;
   }
