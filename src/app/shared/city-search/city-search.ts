@@ -29,7 +29,7 @@ export class CitySearch {
   protected filteredZones = signal<Zone[]>([]);
   protected searchTerm = signal<string | null>(null);
   protected showDropdown = signal<boolean>(false);
-  protected readonly selectedCity = output<Zone>;
+  protected readonly selectedCity = output<Zone>();
 
   #effect = effect(() => {});
 
@@ -46,15 +46,10 @@ export class CitySearch {
     });
 
     fromEvent(this.searchBox().nativeElement, 'blur').subscribe(() => {
-      this.showDropdown.set(false);
       if (dropDownEl) {
         setTimeout(() => {
-          dropDownEl.classList.add(
-            'invisible',
-            'pointer-events-none',
-            'max-h-0'
-          );
-        }, 200);
+          this.showDropdown.set(false);
+        }, 100);
       }
     });
 
@@ -80,9 +75,9 @@ export class CitySearch {
     this.filteredZones.set(this.zoneList());
   }
 
-  setSearchedValue(zone: Zone) {
+  protected setSearchedValue(zone: Zone) {
     this.searchTerm.set(`${zone.name}, ${zone.country}`);
-    this.selectedCity(zone);
+    this.selectedCity.emit(zone);
   }
 }
 interface Zone {

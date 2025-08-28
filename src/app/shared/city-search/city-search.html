@@ -23,7 +23,7 @@
       @for (zone of filteredZones(); track $index) {
       <li
         class="p-2 h-10 hover:bg-sky-100 cursor-pointer"
-        (click)="setSearchedValue(zone)"
+        (mousedown)="setSearchedValue(zone)"
       >
         {{ zone.name }}, {{ zone.state }}
       </li>
