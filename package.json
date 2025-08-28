@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --open --port 4200 --live-reload",
+    "start": "ng serve --open --port 4200 --live-reload --poll=2000",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development",
+    "watch": "ng build --watch --configuration development --poll=2000",
     "test": "ng test"
   },
   "prettier": {
