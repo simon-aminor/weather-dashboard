@@ -1,12 +1,16 @@
 @if (hasForecast()) {
-  <div class="grid w-full gap-4 md:grid-cols-2 xl:grid-cols-4">
+  <div
+    class="grid w-full gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6"
+  >
     @for (day of forecast()!; track day.timestamp) {
       <article
-        class="group relative overflow-hidden rounded-3xl bg-white/85 p-6 shadow-card-day backdrop-blur transition hover:-translate-y-1 hover:shadow-xl dark:bg-night-800/75 dark:text-night-50 dark:shadow-card-night"
+        class="group relative min-w-0 overflow-hidden rounded-3xl bg-white/85 p-6 shadow-card-day backdrop-blur transition hover:-translate-y-1 hover:shadow-xl dark:bg-night-800/75 dark:text-night-50 dark:shadow-card-night"
       >
         <header class="flex items-start justify-between gap-4">
           <div class="flex flex-col leading-tight">
-            <span class="text-[0.65rem] uppercase tracking-[0.4em] text-day-500 dark:text-night-300">
+            <span
+              class="text-[0.6rem] uppercase tracking-[0.3em] text-day-500 dark:text-night-300"
+            >
               {{ day.dayLabel }}
             </span>
             <span class="text-lg font-semibold text-day-900 dark:text-night-50">
@@ -27,10 +31,10 @@
         <div class="mt-6 flex flex-col gap-2">
           <div class="flex items-baseline gap-2 leading-none">
             <span class="text-3xl font-semibold text-day-900 dark:text-night-50">
-              {{ day.maxTemp ?? '—' }}{{ day.unitSymbol }}
+              {{ day.maxTemp ?? "—" }}{{ day.unitSymbol }}
             </span>
             <span class="text-base font-medium text-day-600 dark:text-night-200">
-              / {{ day.minTemp ?? '—' }}{{ day.unitSymbol }}
+              / {{ day.minTemp ?? "—" }}{{ day.unitSymbol }}
             </span>
           </div>
           <p class="text-sm capitalize text-day-600 dark:text-night-200">
@@ -39,27 +43,39 @@
         </div>
 
         <dl class="mt-6 grid grid-cols-3 gap-2 text-xs font-medium">
-          <div class="flex flex-col gap-1 rounded-2xl bg-mist-100/80 px-3 py-2 text-day-700 shadow-card-day dark:bg-night-700/40 dark:text-night-100 dark:shadow-card-night">
-            <dt class="text-[0.55rem] uppercase tracking-[0.35em] text-day-500 opacity-80 dark:text-night-300">
+          <div
+            class="flex flex-col gap-1 rounded-2xl bg-mist-100/80 px-3 py-2 text-day-700 shadow-card-day dark:bg-night-700/40 dark:text-night-100 dark:shadow-card-night"
+          >
+            <dt
+              class="text-[0.5rem] uppercase tracking-[0.25em] text-day-500 opacity-80 dark:text-night-300"
+            >
               Humidity
             </dt>
-            <dd class="text-sm font-semibold leading-none">
-              {{ day.humidity ?? '—' }}%
+            <dd class="text-sm font-semibold leading-tight">
+              {{ day.humidity ?? "—" }}%
             </dd>
           </div>
-          <div class="flex flex-col gap-1 rounded-2xl bg-mist-100/80 px-3 py-2 text-day-700 shadow-card-day dark:bg-night-700/40 dark:text-night-100 dark:shadow-card-night">
-            <dt class="text-[0.55rem] uppercase tracking-[0.35em] text-day-500 opacity-80 dark:text-night-300">
+          <div
+            class="flex flex-col gap-1 rounded-2xl bg-mist-100/80 px-3 py-2 text-day-700 shadow-card-day dark:bg-night-700/40 dark:text-night-100 dark:shadow-card-night"
+          >
+            <dt
+              class="text-[0.5rem] uppercase tracking-[0.25em] text-day-500 opacity-80 dark:text-night-300"
+            >
               Wind
             </dt>
-            <dd class="text-sm font-semibold leading-none">
-              {{ day.windLabel ?? '—' }}
+            <dd class="text-sm font-semibold leading-tight">
+              {{ day.windLabel ?? "—" }}
             </dd>
           </div>
-          <div class="flex flex-col gap-1 rounded-2xl bg-mist-100/80 px-3 py-2 text-day-700 shadow-card-day dark:bg-night-700/40 dark:text-night-100 dark:shadow-card-night">
-            <dt class="text-[0.55rem] uppercase tracking-[0.35em] text-day-500 opacity-80 dark:text-night-300">
+          <div
+            class="flex flex-col gap-1 rounded-2xl bg-mist-100/80 px-3 py-2 text-day-700 shadow-card-day dark:bg-night-700/40 dark:text-night-100 dark:shadow-card-night"
+          >
+            <dt
+              class="text-[0.5rem] uppercase tracking-[0.25em] text-day-500 opacity-80 dark:text-night-300"
+            >
               Rain/Snow
             </dt>
-            <dd class="text-sm font-semibold leading-none">
+            <dd class="text-sm font-semibold leading-tight">
               @if (day.precipitation != null) {
                 {{ day.precipitation }} mm
               } @else {
@@ -76,3 +92,4 @@
     Forecast data is currently unavailable.
   </p>
 }
+

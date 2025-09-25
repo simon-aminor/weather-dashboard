@@ -1,23 +1,23 @@
 @if (weatherData()) {
   <div
-    class="w-full max-w-2xl rounded-3xl bg-white/85 p-8 shadow-card-day backdrop-blur transition-colors duration-500 dark:bg-night-800/80 dark:text-night-50 dark:shadow-card-night"
+    class="w-full max-w-2xl rounded-3xl bg-white/88 p-6 shadow-card-day backdrop-blur transition-colors duration-500 dark:bg-night-800/80 dark:text-night-50 dark:shadow-card-night sm:p-8"
   >
     <div class="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
       <div class="flex flex-col gap-2">
         <p class="text-xs uppercase tracking-[0.4em] text-day-500 dark:text-night-300">
           Current Weather
         </p>
-        <h2 class="text-3xl font-semibold tracking-tight text-day-900 dark:text-night-50">
+        <h2 class="text-2xl font-semibold tracking-tight text-day-900 dark:text-night-50 sm:text-3xl">
           {{ weatherData()?.name }}, {{ weatherData()?.sys?.country }}
         </h2>
-        <p class="text-base capitalize text-day-700 dark:text-night-200">
+        <p class="text-sm capitalize text-day-600 dark:text-night-200 sm:text-base">
           {{ headline()?.description ?? 'Current conditions' }}
         </p>
       </div>
 
       @if (iconUrl()) {
         <img
-          class="mx-auto h-28 w-28 drop-shadow-2xl md:mx-0"
+          class="h-20 w-20 shrink-0 drop-shadow-2xl sm:h-24 sm:w-24"
           [src]="iconUrl()!"
           alt="Weather icon"
           loading="lazy"
@@ -25,11 +25,11 @@
       }
     </div>
 
-    <div class="mt-6 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-      <div class="text-6xl font-semibold text-day-900 dark:text-night-50">
+    <div class="mt-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div class="text-5xl font-semibold text-day-900 dark:text-night-50 sm:text-6xl">
         {{ coreTemp() ?? '—' }}{{ unitLabel() }}
       </div>
-      <div class="flex flex-col gap-2 text-sm text-day-700 dark:text-night-200">
+      <div class="flex flex-col gap-1 text-sm text-day-600 dark:text-night-200 sm:text-base">
         <span>Feels like {{ feelsLikeTemp() ?? '—' }}{{ unitLabel() }}</span>
         <span>
           Low {{ minTemp() ?? '—' }}{{ unitLabel() }} • High
@@ -38,7 +38,7 @@
       </div>
     </div>
 
-    <div class="mt-8 grid gap-3 sm:grid-cols-2">
+    <div class="mt-6 grid gap-3 sm:grid-cols-2">
       <div class="flex items-center justify-between rounded-2xl bg-mist-100/80 px-4 py-3 text-day-800 shadow-card-day dark:bg-night-700/40 dark:text-night-100 dark:shadow-card-night">
         <span class="font-medium">Humidity</span>
         <span>{{ humidity() ?? '—' }}%</span>

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CitySearch, Zone } from '../../shared/city-search/city-search';
 import { ForecastList } from '../../shared/forecast-list/forecast-list';
 import { WeatherCard } from '../../shared/weather-card/weather-card';
@@ -16,8 +16,14 @@ import {
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
 })
-export class HomePageComponent {
+export class HomePageComponent implements OnInit {
   private readonly apiService = inject(HomeService);
+  private readonly fallbackZone: Zone = {
+    name: 'Isfahan',
+    country: 'IR',
+    lat: 32.6539,
+    lon: 51.6663,
+  };
 
   protected weather = signal<WeatherResponse | null>(null);
   protected forecast = signal<DailyForecast[]>([]);
@@ -25,6 +31,11 @@ export class HomePageComponent {
   protected errorMessage = signal<string | null>(null);
   protected selectedUnit = signal<UnitSystem>('metric');
   protected selectedZone = signal<Zone | null>(null);
+  protected readonly currentYear = new Date().getFullYear();
+
+  async ngOnInit(): Promise<void> {
+    await this.initializeWeather();
+  }
 
   async loadWeather(zone: Zone) {
     this.selectedZone.set(zone);
@@ -39,6 +50,37 @@ export class HomePageComponent {
     }
   }
 
+  private async initializeWeather() {
+    const unit = this.selectedUnit();
+
+    if (typeof navigator !== 'undefined' && 'geolocation' in navigator) {
+      try {
+        const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            enableHighAccuracy: true,
+            timeout: 8000,
+            maximumAge: 0,
+          });
+        });
+
+        const geoZone: Zone = {
+          name: 'Current Location',
+          country: '',
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+        };
+        this.selectedZone.set(geoZone);
+        await this.fetchWeather(geoZone, unit);
+        return;
+      } catch (error) {
+        console.warn('Geolocation unavailable, using fallback location.', error);
+      }
+    }
+
+    this.selectedZone.set(this.fallbackZone);
+    await this.fetchWeather(this.fallbackZone, unit);
+  }
+
   private async fetchWeather(zone: Zone, unit: UnitSystem) {
     this.isLoading.set(true);
     this.errorMessage.set(null);
@@ -50,7 +92,17 @@ export class HomePageComponent {
       ]);
 
       if (weatherResult.status === 'fulfilled') {
-        this.weather.set(weatherResult.value);
+        const currentWeather = weatherResult.value;
+        this.weather.set(currentWeather);
+
+        const normalizedZone: Zone = {
+          name: currentWeather.name ?? zone.name,
+          country: currentWeather.sys?.country ?? zone.country,
+          lat: currentWeather.coord?.lat ?? zone.lat,
+          lon: currentWeather.coord?.lon ?? zone.lon,
+          state: zone.state,
+        };
+        this.selectedZone.set(normalizedZone);
       } else {
         throw weatherResult.reason;
       }

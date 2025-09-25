@@ -152,7 +152,7 @@ export class HomeService {
 
     const days = Array.from(aggregates.values())
       .sort((a, b) => a.timestamp - b.timestamp)
-      .slice(0, 7)
+      .slice(0, 6)
       .map((aggregate) => {
         const sample = aggregate.bestSample;
         const date = new Date(aggregate.timestamp);
@@ -321,3 +321,4 @@ interface ForecastEntry {
     all: number;
   };
 }
+
