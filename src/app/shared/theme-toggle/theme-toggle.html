@@ -5,24 +5,63 @@
     @for (option of options; track option.value) {
       <button
         type="button"
-        class="flex min-w-[120px] flex-col items-center rounded-full px-4 py-2 text-xs font-medium uppercase tracking-wide text-day-700 transition hover:bg-day-200/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-aurora-300 dark:text-night-100 dark:hover:bg-night-700/70"
+        class="flex w-24 flex-col items-center rounded-full px-4 py-2 text-xs font-medium uppercase tracking-wide text-day-700 transition hover:bg-day-200/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-aurora-300 dark:text-night-100 dark:hover:bg-night-700/70 sm:w-28"
         [ngClass]="{
           'bg-day-500 text-white shadow-card-day hover:bg-day-500 dark:bg-night-500 dark:text-white dark:shadow-card-night dark:hover:bg-night-500':
             isActive(option.value)
         }"
         (click)="select(option.value)"
+        [attr.aria-pressed]="isActive(option.value)"
         [title]="option.description"
       >
-        <span class="text-sm font-semibold leading-none">
+        @if (option.value === 'light') {
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="h-5 w-5 sm:h-6 sm:w-6"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M12 2.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V3A.75.75 0 0 1 12 2.25Zm5.657 2.093a.75.75 0 0 1 1.06 1.06l-1.06 1.061a.75.75 0 0 1-1.06-1.06l1.06-1.061ZM12 7.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Zm9.75 4.5a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5a.75.75 0 0 1 .75.75Zm-16.5 0a.75.75 0 0 1-.75.75H2.25a.75.75 0 0 1 0-1.5H4.5a.75.75 0 0 1 .75.75Zm13.657 4.157a.75.75 0 1 1 1.06 1.06l-1.06 1.061a.75.75 0 1 1-1.06-1.06l1.06-1.061Zm-12.02 0a.75.75 0 0 1 0 1.06l-1.061 1.061a.75.75 0 1 1-1.06-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM12 18.75a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5a.75.75 0 0 1 .75-.75Z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        } @else if (option.value === 'dark') {
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="h-5 w-5 sm:h-6 sm:w-6"
+          >
+            <path
+              d="M21 12.75A8.25 8.25 0 0 1 10.5 21a.75.75 0 0 1-.52-1.29A6.75 6.75 0 0 0 13.8 4.02.75.75 0 0 1 14.76 3 8.25 8.25 0 0 1 21 12.75Z"
+            />
+          </svg>
+        } @else {
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="h-5 w-5 sm:h-6 sm:w-6"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.25 5A2.25 2.25 0 0 0 3 7.25v9.5A2.25 2.25 0 0 0 5.25 19h13.5A2.25 2.25 0 0 0 21 16.75v-9.5A2.25 2.25 0 0 0 18.75 5H5.25ZM4.5 7.25A.75.75 0 0 1 5.25 6.5h13.5a.75.75 0 0 1 .75.75v9.5a.75.75 0 0 1-.75.75H5.25a.75.75 0 0 1-.75-.75v-9.5ZM6 8.5h12v1.5H6V8.5Zm0 3h12v1.5H6v-1.5Z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        }
+        <span class="mt-1 hidden text-[0.65rem] tracking-[0.25em] opacity-70 sm:block">
           {{ option.label }}
         </span>
-        <span class="mt-1 text-[0.65rem] font-normal normal-case tracking-[0.25em] opacity-70">
+        <span class="mt-1 text-[0.65rem] tracking-[0.25em] opacity-70 sm:hidden">
           @if (option.value === 'system') {
-            Auto
+            Sys
           } @else if (option.value === 'light') {
-            Light
+            Sun
           } @else {
-            Dark
+            Moon
           }
         </span>
       </button>

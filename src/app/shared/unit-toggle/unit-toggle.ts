@@ -8,6 +8,7 @@ interface UnitOption {
   label: string;
   symbol: string;
   windHint: string;
+  short: 'C' | 'F' | 'K';
 }
 
 @Component({
@@ -21,9 +22,9 @@ export class UnitToggle {
   readonly unitChange = output<UnitSystem>();
 
   protected readonly unitOptions = signal<UnitOption[]>([
-    { value: 'metric', label: 'Metric', symbol: '°C', windHint: 'km/h' },
-    { value: 'imperial', label: 'Imperial', symbol: '°F', windHint: 'mph' },
-    { value: 'standard', label: 'Kelvin', symbol: 'K', windHint: 'm/s' },
+    { value: 'metric', label: 'Metric', symbol: '°C', windHint: 'km/h', short: 'C' },
+    { value: 'imperial', label: 'Imperial', symbol: '°F', windHint: 'mph', short: 'F' },
+    { value: 'standard', label: 'Kelvin', symbol: 'K', windHint: 'm/s', short: 'K' },
   ]);
 
   protected selectUnit(unit: UnitSystem) {

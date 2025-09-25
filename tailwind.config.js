@@ -62,10 +62,34 @@ module.exports = {
           '0%': { opacity: '1', transform: 'translateY(0)' },
           '100%': { opacity: '0', transform: 'translateY(-6px)' },
         },
+        'hero-pan': {
+          '0%': {
+            opacity: '0',
+            transform: 'scale(0.95) translateY(20px)',
+            filter: 'brightness(0.8)',
+          },
+          '60%': {
+            opacity: '1',
+            transform: 'scale(1.02) translateY(0)',
+            filter: 'brightness(1.05)',
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'scale(1) translateY(0)',
+            filter: 'brightness(1)',
+          },
+        },
+        'card-pop': {
+          '0%': { opacity: '0', transform: 'translateY(20px) scale(0.96)' },
+          '70%': { opacity: '1', transform: 'translateY(-2px) scale(1.01)' },
+          '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+        },
       },
       animation: {
         'slide-fade': 'slide-fade-in 0.2s ease-out forwards',
         'slide-fade-reverse': 'slide-fade-out 0.15s ease-in forwards',
+        'hero-pan': 'hero-pan 1s ease-out both',
+        'card-pop': 'card-pop 0.6s ease-out both',
       },
     },
   },
