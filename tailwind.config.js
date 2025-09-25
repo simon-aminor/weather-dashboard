@@ -53,6 +53,20 @@ module.exports = {
         'day-sky': 'linear-gradient(160deg, #e4f1ff 0%, #a0ccff 40%, #78b3ff 100%)',
         'night-sky': 'linear-gradient(160deg, #0b102f 0%, #253184 45%, #3846b3 100%)',
       },
+      keyframes: {
+        'slide-fade-in': {
+          '0%': { opacity: '0', transform: 'translateY(-6px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'slide-fade-out': {
+          '0%': { opacity: '1', transform: 'translateY(0)' },
+          '100%': { opacity: '0', transform: 'translateY(-6px)' },
+        },
+      },
+      animation: {
+        'slide-fade': 'slide-fade-in 0.2s ease-out forwards',
+        'slide-fade-reverse': 'slide-fade-out 0.15s ease-in forwards',
+      },
     },
   },
   plugins: [],

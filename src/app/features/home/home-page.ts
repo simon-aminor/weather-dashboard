@@ -4,7 +4,11 @@ import { ForecastList } from '../../shared/forecast-list/forecast-list';
 import { WeatherCard } from '../../shared/weather-card/weather-card';
 import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
 import { UnitSystem, UnitToggle } from '../../shared/unit-toggle/unit-toggle';
-import { HomeService, WeatherResponse } from './home-page.service';
+import {
+  DailyForecast,
+  HomeService,
+  WeatherResponse,
+} from './home-page.service';
 
 @Component({
   selector: 'app-home-page',
@@ -16,6 +20,7 @@ export class HomePageComponent {
   private readonly apiService = inject(HomeService);
 
   protected weather = signal<WeatherResponse | null>(null);
+  protected forecast = signal<DailyForecast[]>([]);
   protected isLoading = signal<boolean>(false);
   protected errorMessage = signal<string | null>(null);
   protected selectedUnit = signal<UnitSystem>('metric');
@@ -39,11 +44,27 @@ export class HomePageComponent {
     this.errorMessage.set(null);
 
     try {
-      const result = await this.apiService.getWeather(zone.lat, zone.lon, unit);
-      this.weather.set(result);
+      const [weatherResult, forecastResult] = await Promise.allSettled([
+        this.apiService.getWeather(zone.lat, zone.lon, unit),
+        this.apiService.getForecast(zone.lat, zone.lon, unit),
+      ]);
+
+      if (weatherResult.status === 'fulfilled') {
+        this.weather.set(weatherResult.value);
+      } else {
+        throw weatherResult.reason;
+      }
+
+      if (forecastResult.status === 'fulfilled') {
+        this.forecast.set(forecastResult.value);
+      } else {
+        console.warn('Forecast retrieval failed', forecastResult.reason);
+        this.forecast.set([]);
+      }
     } catch (error) {
       console.error('Failed to fetch weather', error);
       this.weather.set(null);
+      this.forecast.set([]);
       this.errorMessage.set(
         'Unable to load weather data right now. Please try another city or try again later.'
       );
