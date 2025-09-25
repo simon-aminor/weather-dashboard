@@ -1,6 +1,12 @@
 import { Component, computed, input } from '@angular/core';
 import { WeatherResponse } from '../../features/home/home-page.service';
-import { TemperatureUnit } from '../unit-toggle/unit-toggle';
+import { UnitSystem } from '../unit-toggle/unit-toggle';
+
+const UNIT_SYMBOL: Record<UnitSystem, string> = {
+  metric: '°C',
+  imperial: '°F',
+  standard: 'K',
+};
 
 @Component({
   selector: 'app-weather-card',
@@ -10,11 +16,9 @@ import { TemperatureUnit } from '../unit-toggle/unit-toggle';
 })
 export class WeatherCard {
   weatherData = input<WeatherResponse | null>();
-  unit = input<TemperatureUnit>('celsius');
+  unit = input<UnitSystem>('metric');
 
-  protected readonly unitLabel = computed(() =>
-    this.unit() === 'celsius' ? '°C' : '°F'
-  );
+  protected readonly unitLabel = computed(() => UNIT_SYMBOL[this.unit()]);
 
   protected readonly iconUrl = computed(() => {
     const data = this.weatherData();
@@ -77,9 +81,15 @@ export class WeatherCard {
     if (speed == null) {
       return null;
     }
-    return this.unit() === 'celsius'
-      ? `${Math.round(speed * 3.6)} km/h`
-      : `${Math.round(speed * 2.23694)} mph`;
+
+    switch (this.unit()) {
+      case 'imperial':
+        return `${Math.round(speed)} mph`;
+      case 'metric':
+        return `${Math.round(speed * 3.6)} km/h`;
+      default:
+        return `${Math.round(speed)} m/s`;
+    }
   });
 
   protected readonly sunrise = computed(() => {
@@ -104,11 +114,7 @@ export class WeatherCard {
     if (value == null) {
       return null;
     }
-    const celsius = value;
-    if (this.unit() === 'celsius') {
-      return Math.round(celsius);
-    }
-    return Math.round((celsius * 9) / 5 + 32);
+    return Math.round(value);
   }
 
   private toLocalTime(timestamp: number, timezoneOffsetSeconds: number): string {

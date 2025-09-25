@@ -1,29 +1,48 @@
-<section class="flex flex-col items-center gap-6 p-6">
-  <city-search (selectedCity)="loadWeather($event)"></city-search>
+<section
+  class="min-h-screen w-full bg-day-sky bg-cover bg-fixed bg-no-repeat text-day-900 transition-colors duration-500 dark:bg-night-sky dark:text-night-100"
+>
+  <div class="mx-auto flex w-full max-w-5xl flex-col gap-8 px-6 py-12">
+    <header class="flex flex-col items-center gap-2 text-center">
+      <h1 class="text-4xl font-semibold tracking-tight">Weather Dashboard</h1>
+      <p class="max-w-2xl text-sm text-day-700 dark:text-night-200">
+        Track live conditions, switch units, and settle in with a theme tailored to your surroundings.
+      </p>
+    </header>
 
-  @if (weather()) {
-    <app-unit-toggle
-      [selectedUnit]="selectedUnit()"
-      (unitChange)="onUnitChange($event)"
-    ></app-unit-toggle>
-  }
+    <city-search (selectedCity)="loadWeather($event)"></city-search>
 
-  @if (isLoading()) {
-    <p class="text-sky-700 text-lg animate-pulse">Loading current weather...</p>
-  } @else {
-    @if (errorMessage()) {
-      <p class="max-w-xl rounded-lg border border-rose-300 bg-rose-50 px-4 py-3 text-center text-rose-700 shadow">
-        {{ errorMessage() }}
+    <div
+      class="flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4"
+    >
+      <app-unit-toggle
+        [selectedUnit]="selectedUnit()"
+        (unitChange)="onUnitChange($event)"
+      ></app-unit-toggle>
+      <app-theme-toggle></app-theme-toggle>
+    </div>
+
+    @if (isLoading()) {
+      <p class="flex items-center justify-center gap-2 text-lg text-day-800 dark:text-night-100">
+        <span class="inline-flex h-3 w-3 animate-ping rounded-full bg-aurora-400"></span>
+        Loading current weather...
       </p>
     } @else {
-      @if (weather()) {
-        <app-weather-card
-          [weatherData]="weather()"
-          [unit]="selectedUnit()"
-        ></app-weather-card>
+      @if (errorMessage()) {
+        <p class="mx-auto max-w-xl rounded-lg border border-aurora-300 bg-white/80 px-4 py-3 text-center text-day-800 shadow-card-day backdrop-blur dark:border-night-500 dark:bg-night-800/80 dark:text-night-50 dark:shadow-card-night">
+          {{ errorMessage() }}
+        </p>
       } @else {
-        <p class="text-sky-600">Search for a city to view its latest weather.</p>
+        @if (weather()) {
+          <app-weather-card
+            [weatherData]="weather()"
+            [unit]="selectedUnit()"
+          ></app-weather-card>
+        } @else {
+          <p class="text-center text-sm text-day-800 dark:text-night-200">
+            Search for a city to view its latest weather snapshot.
+          </p>
+        }
       }
     }
-  }
+  </div>
 </section>

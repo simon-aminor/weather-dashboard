@@ -1,16 +1,23 @@
 <div class="flex items-center justify-center">
-  <div class="flex gap-1 rounded-full bg-white/70 p-1 shadow-md">
-    @for (unit of units(); track unit) {
+  <div
+    class="flex w-full max-w-[420px] flex-wrap justify-center gap-1 rounded-full bg-white/70 p-1 shadow-card-day backdrop-blur dark:bg-night-800/70 dark:shadow-card-night"
+  >
+    @for (option of unitOptions(); track option.value) {
       <button
         type="button"
-        class="rounded-full px-4 py-2 text-sm font-medium transition"
+        class="group flex min-w-[120px] flex-col items-center rounded-full px-4 py-2 text-sm font-semibold text-day-700 transition hover:bg-day-200/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-aurora-300 dark:text-night-100 dark:hover:bg-night-700/70"
         [ngClass]="{
-          'bg-sky-500 text-white shadow': isActive(unit),
-          'text-sky-600 hover:bg-sky-100': !isActive(unit)
+          'bg-day-500 text-white shadow-card-day hover:bg-day-500 dark:bg-night-500 dark:text-white dark:shadow-card-night dark:hover:bg-night-500': isActive(option)
         }"
-        (click)="selectUnit(unit)"
+        (click)="selectUnit(option.value)"
+        [title]="option.label + ' • wind: ' + option.windHint"
       >
-        {{ labelFor(unit) }}
+        <span class="text-base font-semibold leading-none">
+          {{ option.symbol }}
+        </span>
+        <span class="mt-1 text-[0.65rem] uppercase tracking-[0.25em] opacity-70">
+          {{ option.label }}
+        </span>
       </button>
     }
   </div>

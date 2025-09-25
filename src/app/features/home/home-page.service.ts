@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { UnitSystem } from '../../shared/unit-toggle/unit-toggle';
 
 @Injectable({
   providedIn: 'root',
@@ -9,8 +10,20 @@ import { HttpClient } from '@angular/common/http';
 export class HomeService {
   readonly http = inject(HttpClient);
 
-  async getWeather(lat: number, lon: number): Promise<WeatherResponse> {
-    const urlAddress = `${environment.apiBaseUrl}data/2.5/weather?lat=${lat}&lon=${lon}&appid=${environment.openWeatherMapApiKey}&units=metric`;
+  async getWeather(
+    lat: number,
+    lon: number,
+    unit: UnitSystem
+  ): Promise<WeatherResponse> {
+    const params = new URLSearchParams({
+      lat: lat.toString(),
+      lon: lon.toString(),
+      appid: environment.openWeatherMapApiKey,
+    });
+
+    params.set('units', unit);
+
+    const urlAddress = `${environment.apiBaseUrl}data/2.5/weather?${params.toString()}`;
 
     try {
       const weatherCondition = await firstValueFrom(

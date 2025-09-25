@@ -1,7 +1,14 @@
 import { NgClass } from '@angular/common';
 import { Component, input, output, signal } from '@angular/core';
 
-export type TemperatureUnit = 'celsius' | 'fahrenheit';
+export type UnitSystem = 'metric' | 'imperial' | 'standard';
+
+interface UnitOption {
+  value: UnitSystem;
+  label: string;
+  symbol: string;
+  windHint: string;
+}
 
 @Component({
   selector: 'app-unit-toggle',
@@ -10,26 +17,23 @@ export type TemperatureUnit = 'celsius' | 'fahrenheit';
   styleUrl: './unit-toggle.scss',
 })
 export class UnitToggle {
-  readonly selectedUnit = input<TemperatureUnit>('celsius');
-  readonly unitChange = output<TemperatureUnit>();
+  readonly selectedUnit = input<UnitSystem>('metric');
+  readonly unitChange = output<UnitSystem>();
 
-  protected readonly units = signal<TemperatureUnit[]>([
-    'celsius',
-    'fahrenheit',
+  protected readonly unitOptions = signal<UnitOption[]>([
+    { value: 'metric', label: 'Metric', symbol: '°C', windHint: 'km/h' },
+    { value: 'imperial', label: 'Imperial', symbol: '°F', windHint: 'mph' },
+    { value: 'standard', label: 'Kelvin', symbol: 'K', windHint: 'm/s' },
   ]);
 
-  protected selectUnit(unit: TemperatureUnit) {
+  protected selectUnit(unit: UnitSystem) {
     if (this.selectedUnit() === unit) {
       return;
     }
     this.unitChange.emit(unit);
   }
 
-  protected labelFor(unit: TemperatureUnit) {
-    return unit === 'celsius' ? '°C' : '°F';
-  }
-
-  protected isActive(unit: TemperatureUnit) {
-    return this.selectedUnit() === unit;
+  protected isActive(option: UnitOption) {
+    return this.selectedUnit() === option.value;
   }
 }

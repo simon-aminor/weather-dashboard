@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { ThemeService } from './core/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -8,5 +9,6 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.scss'
 })
 export class App {
+  private readonly theme = inject(ThemeService);
   protected title = 'weather-dashboard';
 }

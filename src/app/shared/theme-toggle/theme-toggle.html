@@ -1,0 +1,31 @@
+<div class="flex items-center justify-center">
+  <div
+    class="flex gap-1 rounded-full bg-white/70 p-1 shadow-card-day backdrop-blur dark:bg-night-800/70 dark:shadow-card-night"
+  >
+    @for (option of options; track option.value) {
+      <button
+        type="button"
+        class="flex min-w-[120px] flex-col items-center rounded-full px-4 py-2 text-xs font-medium uppercase tracking-wide text-day-700 transition hover:bg-day-200/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-aurora-300 dark:text-night-100 dark:hover:bg-night-700/70"
+        [ngClass]="{
+          'bg-day-500 text-white shadow-card-day hover:bg-day-500 dark:bg-night-500 dark:text-white dark:shadow-card-night dark:hover:bg-night-500':
+            isActive(option.value)
+        }"
+        (click)="select(option.value)"
+        [title]="option.description"
+      >
+        <span class="text-sm font-semibold leading-none">
+          {{ option.label }}
+        </span>
+        <span class="mt-1 text-[0.65rem] font-normal normal-case tracking-[0.25em] opacity-70">
+          @if (option.value === 'system') {
+            Auto
+          } @else if (option.value === 'light') {
+            Light
+          } @else {
+            Dark
+          }
+        </span>
+      </button>
+    }
+  </div>
+</div>
