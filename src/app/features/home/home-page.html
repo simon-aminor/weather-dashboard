@@ -42,7 +42,9 @@
       </a>
     </header>
 
+    <div class="relative z-[60]">
     <city-search (selectedCity)="loadWeather($event)"></city-search>
+    </div>
 
     @if (isLoading()) {
     <p
