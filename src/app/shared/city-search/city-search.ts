@@ -76,11 +76,14 @@ export class CitySearch {
   }
 
   protected setSearchedValue(zone: Zone) {
-    this.searchTerm.set(`${zone.name}, ${zone.country}`);
+    const value = `${zone.name}, ${zone.country}`;
+    this.searchTerm.set(value);
+    this.searchBox().nativeElement.value = value;
     this.selectedCity.emit(zone);
+    this.showDropdown.set(false);
   }
 }
-interface Zone {
+export interface Zone {
   name: string;
   lat: number;
   lon: number;

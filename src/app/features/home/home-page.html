@@ -1,4 +1,29 @@
-<city-search (selectedCity)="loadWeather($event)"></city-search>
-<app-weather-card [weatherData]="weather()"></app-weather-card>
-<!-- <app-unit-toggle></app-unit-toggle>
-<app-forecast-list></app-forecast-list> -->
+<section class="flex flex-col items-center gap-6 p-6">
+  <city-search (selectedCity)="loadWeather($event)"></city-search>
+
+  @if (weather()) {
+    <app-unit-toggle
+      [selectedUnit]="selectedUnit()"
+      (unitChange)="onUnitChange($event)"
+    ></app-unit-toggle>
+  }
+
+  @if (isLoading()) {
+    <p class="text-sky-700 text-lg animate-pulse">Loading current weather...</p>
+  } @else {
+    @if (errorMessage()) {
+      <p class="max-w-xl rounded-lg border border-rose-300 bg-rose-50 px-4 py-3 text-center text-rose-700 shadow">
+        {{ errorMessage() }}
+      </p>
+    } @else {
+      @if (weather()) {
+        <app-weather-card
+          [weatherData]="weather()"
+          [unit]="selectedUnit()"
+        ></app-weather-card>
+      } @else {
+        <p class="text-sky-600">Search for a city to view its latest weather.</p>
+      }
+    }
+  }
+</section>

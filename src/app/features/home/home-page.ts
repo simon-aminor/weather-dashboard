@@ -1,10 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
-import { CitySearch } from '../../shared/city-search/city-search';
+import { CitySearch, Zone } from '../../shared/city-search/city-search';
 import { ForecastList } from '../../shared/forecast-list/forecast-list';
 import { WeatherCard } from '../../shared/weather-card/weather-card';
-import { UnitToggle } from '../../shared/unit-toggle/unit-toggle';
-import { HomeService } from './home-page.service';
-import { throwError } from 'rxjs';
+import { UnitToggle, TemperatureUnit } from '../../shared/unit-toggle/unit-toggle';
+import { HomeService, WeatherResponse } from './home-page.service';
 
 @Component({
   selector: 'app-home-page',
@@ -15,16 +14,30 @@ import { throwError } from 'rxjs';
 export class HomePageComponent {
   private readonly apiService = inject(HomeService);
 
-  protected weather = signal<any | null>(null);
+  protected weather = signal<WeatherResponse | null>(null);
+  protected isLoading = signal<boolean>(false);
+  protected errorMessage = signal<string | null>(null);
+  protected selectedUnit = signal<TemperatureUnit>('celsius');
 
-  async loadWeather(e: any) {
-    this.apiService
-      .getWeather(e.lat, e.lon)
-      .then((result) => {
-        this.weather.set(result);
-      })
-      .catch(() => {
-        throwError(() => new Error('error while fetching your location data!'));
-      });
+  async loadWeather(zone: Zone) {
+    this.isLoading.set(true);
+    this.errorMessage.set(null);
+
+    try {
+      const result = await this.apiService.getWeather(zone.lat, zone.lon);
+      this.weather.set(result);
+    } catch (error) {
+      console.error('Failed to fetch weather', error);
+      this.weather.set(null);
+      this.errorMessage.set(
+        'Unable to load weather data right now. Please try another city or try again later.'
+      );
+    } finally {
+      this.isLoading.set(false);
+    }
+  }
+
+  protected onUnitChange(unit: TemperatureUnit) {
+    this.selectedUnit.set(unit);
   }
 }

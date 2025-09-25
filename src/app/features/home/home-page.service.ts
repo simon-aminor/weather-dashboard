@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { firstValueFrom, throwError } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 
@@ -9,19 +9,26 @@ import { HttpClient } from '@angular/common/http';
 export class HomeService {
   readonly http = inject(HttpClient);
 
-  async getWeather(lat: number, lon: number) {
+  async getWeather(lat: number, lon: number): Promise<WeatherResponse> {
     const urlAddress = `${environment.apiBaseUrl}data/2.5/weather?lat=${lat}&lon=${lon}&appid=${environment.openWeatherMapApiKey}&units=metric`;
-    const weatherCondition: any = await firstValueFrom(
-      this.http.get(urlAddress)
-    );
 
-    // attach icon url
-    if (weatherCondition.weather?.length) {
-      const iconCode = weatherCondition.weather[0].icon;
-      weatherCondition.weatherIconUrl = `${environment.apiBaseUrl}img/wn/${iconCode}@2x.png`;
+    try {
+      const weatherCondition = await firstValueFrom(
+        this.http.get<WeatherResponse>(urlAddress)
+      );
+
+      if (weatherCondition.weather?.length) {
+        const iconCode = weatherCondition.weather[0].icon;
+        weatherCondition.weatherIconUrl = iconCode
+          ? `https://openweathermap.org/img/wn/${iconCode}@4x.png`
+          : null;
+      }
+
+      return weatherCondition;
+    } catch (error) {
+      console.error('HomeService.getWeather failed', error);
+      throw error;
     }
-
-    return weatherCondition;
   }
 }
 export interface WeatherResponse {
@@ -66,5 +73,5 @@ export interface WeatherResponse {
   name: string;
   cod: number;
   /** Custom property we add in service */
-  weatherIconUrl?: string;
+  weatherIconUrl?: string | null;
 }
