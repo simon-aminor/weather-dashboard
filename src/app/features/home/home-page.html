@@ -5,10 +5,11 @@
     class="pointer-events-none absolute inset-x-0 top-0 z-40 flex flex-col gap-3 px-4 pt-4 sm:flex-row sm:items-start sm:justify-between sm:px-6"
   >
     <div class="pointer-events-auto">
-      <app-theme-toggle></app-theme-toggle>
+      <app-theme-toggle class="max-2xl:hidden"></app-theme-toggle>
     </div>
     <div class="pointer-events-auto sm:ml-auto">
       <app-unit-toggle
+        class="max-2xl:hidden"
         [selectedUnit]="selectedUnit()"
         (unitChange)="onUnitChange($event)"
       ></app-unit-toggle>

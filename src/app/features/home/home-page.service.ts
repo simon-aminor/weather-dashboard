@@ -3,6 +3,7 @@ import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { UnitSystem } from '../../shared/unit-toggle/unit-toggle';
+import { getWeatherIconAsset } from '../../shared/weather-icons';
 
 const UNIT_SYMBOL_MAP: Record<UnitSystem, string> = {
   metric: '°C',
@@ -40,7 +41,7 @@ export class HomeService {
 
       if (weatherCondition.weather?.length) {
         const iconCode = weatherCondition.weather[0].icon;
-        weatherCondition.weatherIconUrl = this.buildIconUrl(iconCode, '4x');
+        weatherCondition.weatherIconUrl = this.buildIconUrl(iconCode);
       }
 
       return weatherCondition;
@@ -164,7 +165,7 @@ export class HomeService {
           timestamp: aggregate.timestamp,
           dayLabel: dayFormatter.format(date),
           dateLabel: dateFormatter.format(date),
-          iconUrl: this.buildIconUrl(iconCode, '2x'),
+          iconUrl: this.buildIconUrl(iconCode),
           description: sample.weather?.[0]?.description ?? 'Forecast',
           minTemp: Math.round(aggregate.minTemp),
           maxTemp: Math.round(aggregate.maxTemp),
@@ -213,11 +214,8 @@ export class HomeService {
     return Math.round(total * 10) / 10;
   }
 
-  private buildIconUrl(iconCode: string | undefined, size: '2x' | '4x') {
-    if (!iconCode) {
-      return null;
-    }
-    return `https://openweathermap.org/img/wn/${iconCode}@${size}.png`;
+  private buildIconUrl(iconCode: string | undefined) {
+    return getWeatherIconAsset(iconCode);
   }
 }
 export interface WeatherResponse {

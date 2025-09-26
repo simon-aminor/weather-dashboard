@@ -5,7 +5,7 @@
   @for (day of forecast()!; track day.timestamp; let idx = $index) {
   <article
     class="group relative min-w-0 overflow-hidden rounded-3xl bg-white/85 p-6 shadow-card-day backdrop-blur transition hover:-translate-y-1 hover:shadow-xl dark:bg-night-800/75 dark:text-night-50 dark:shadow-card-night motion-safe:animate-card-pop"
-    [style.animationDelay]="'calc(0.12s * ' + idx + ')'"
+    [style.animationDelay]="'calc(0.17s * ' + idx + ')'"
   >
     <header class="flex items-start justify-between gap-4">
       <div class="flex flex-col leading-tight">

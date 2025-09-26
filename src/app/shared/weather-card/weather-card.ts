@@ -1,6 +1,7 @@
 import { Component, computed, input } from '@angular/core';
 import { WeatherResponse } from '../../features/home/home-page.service';
 import { UnitSystem } from '../unit-toggle/unit-toggle';
+import { getWeatherIconAsset } from '../weather-icons';
 
 const UNIT_SYMBOL: Record<UnitSystem, string> = {
   metric: '°C',
@@ -30,10 +31,7 @@ export class WeatherCard {
       return data.weatherIconUrl;
     }
 
-    const iconCode = data.weather?.[0]?.icon;
-    return iconCode
-      ? `https://openweathermap.org/img/wn/${iconCode}@4x.png`
-      : null;
+    return getWeatherIconAsset(data.weather?.[0]?.icon);
   });
 
   protected readonly headline = computed(() => {
