@@ -19,10 +19,25 @@
   <div
     class="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-10 motion-safe:animate-hero-pan px-4 pb-5 pt-10 sm:px-6 lg:px-8"
   >
-    <header class="flex flex-col items-center gap-4 text-center">
-      <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">
-        Weather Dashboard
-      </h1>
+    <header class="flex flex-col items-center gap-6 text-center">
+      <div class="hero-title-stack flex flex-col items-center gap-4">
+        <h1 class="hero-title text-4xl font-semibold tracking-tight sm:text-5xl">
+          <span class="sr-only">Weather Dashboard</span>
+          <span
+            aria-hidden="true"
+            class="hero-title__typing"
+            data-text="Weather Dashboard"
+          ></span>
+        </h1>
+        <div class="hero-title__celestial" aria-hidden="true">
+          <div class="celestial-track">
+            <span class="celestial-body">
+              <span class="celestial-body__crater celestial-body__crater--lg"></span>
+              <span class="celestial-body__crater celestial-body__crater--sm"></span>
+            </span>
+          </div>
+        </div>
+      </div>
       <p class="text-sm text-day-700 dark:text-night-200 sm:text-base">
         Track live conditions, switch units, and settle in with a theme tailored
         to your surroundings.

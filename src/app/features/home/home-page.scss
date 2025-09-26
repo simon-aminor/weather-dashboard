@@ -1,0 +1,224 @@
+:host {
+  display: block;
+}
+
+.hero-title-stack {
+  position: relative;
+}
+
+.hero-title {
+  position: relative;
+  min-height: clamp(2.75rem, 2.2rem + 2vw, 4.25rem);
+}
+
+.hero-title__typing {
+  --headline-length: 17;
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  padding-right: 0.15em;
+  animation: hero-type 6.5s steps(var(--headline-length)) infinite;
+}
+
+.hero-title__typing::before {
+  content: attr(data-text);
+}
+
+.hero-title__typing::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 0.12em;
+  background-color: currentColor;
+  box-shadow: 0 0 6px currentColor;
+  animation: hero-caret 0.75s step-end infinite;
+}
+
+.hero-title__celestial {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.celestial-track {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(3rem, 10vw, 4.75rem);
+  height: clamp(3rem, 10vw, 4.75rem);
+  border-radius: 9999px;
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  box-shadow: 0 12px 45px rgba(255, 255, 255, 0.18);
+  transition: transform 0.9s cubic-bezier(0.68, -0.55, 0.24, 1.55),
+    border-color 0.6s ease, box-shadow 0.6s ease, background 0.6s ease;
+}
+
+.celestial-body {
+  position: relative;
+  display: block;
+  width: clamp(2.3rem, 7.5vw, 3.5rem);
+  height: clamp(2.3rem, 7.5vw, 3.5rem);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    #fff9c4 0%,
+    #fbbf24 50%,
+    #f97316 100%
+  );
+  box-shadow: 0 0 25px rgba(251, 191, 36, 0.6), 0 0 55px rgba(249, 115, 22, 0.4);
+  transform: translateX(-6%);
+  transition: background 0.6s ease, box-shadow 0.6s ease,
+    transform 0.8s cubic-bezier(0.68, -0.55, 0.24, 1.55);
+}
+
+.celestial-body::after {
+  content: '';
+  position: absolute;
+  inset: -18%;
+  border-radius: 50%;
+  border: 2px solid rgba(253, 224, 71, 0.5);
+  filter: blur(1px);
+  opacity: 0.65;
+  animation: hero-orbit-pulse 6s ease-in-out infinite;
+  transition: opacity 0.6s ease, border-color 0.6s ease;
+}
+
+.celestial-body__crater {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(249, 250, 255, 0.3);
+  box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.4);
+  opacity: 0;
+  transform: scale(0.75);
+  transition: opacity 0.5s ease, transform 0.5s ease, background 0.6s ease,
+    box-shadow 0.6s ease;
+}
+
+.celestial-body__crater--lg {
+  width: 40%;
+  height: 40%;
+  top: 32%;
+  left: 18%;
+}
+
+.celestial-body__crater--sm {
+  width: 26%;
+  height: 26%;
+  bottom: 22%;
+  right: 22%;
+}
+
+@keyframes hero-type {
+  0%,
+  15% {
+    width: 0;
+  }
+  45%,
+  60% {
+    width: calc(var(--headline-length) * 1ch);
+  }
+  90%,
+  100% {
+    width: 0;
+  }
+}
+
+@keyframes hero-caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes hero-orbit-pulse {
+  0%,
+  100% {
+    transform: scale(0.95);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.75;
+  }
+}
+
+:host-context(.dark) .celestial-track {
+  transform: translateY(-4%) rotate(-22deg);
+  border-color: rgba(148, 163, 184, 0.35);
+  background: linear-gradient(
+    160deg,
+    rgba(148, 163, 184, 0.2) 0%,
+    rgba(30, 41, 59, 0.6) 100%
+  );
+  box-shadow: 0 12px 45px rgba(15, 23, 42, 0.45);
+}
+
+:host-context(.dark) .celestial-body {
+  background: radial-gradient(
+    circle at 40% 30%,
+    #f5f7ff 0%,
+    #aeb6e5 55%,
+    #4c5d91 100%
+  );
+  box-shadow: 0 0 18px rgba(134, 148, 213, 0.55),
+    0 0 45px rgba(65, 82, 135, 0.35);
+  transform: translateX(6%);
+}
+
+:host-context(.dark) .celestial-body::after {
+  border-color: rgba(148, 163, 184, 0.4);
+  opacity: 0.4;
+  animation-duration: 8s;
+}
+
+:host-context(.dark) .celestial-body__crater {
+  opacity: 1;
+  transform: scale(1);
+  background: rgba(189, 198, 242, 0.35);
+  box-shadow: inset -3px -3px 6px rgba(241, 244, 255, 0.35),
+    inset 4px 4px 10px rgba(59, 73, 120, 0.45);
+}
+
+:host-context(.dark) .celestial-body__crater--lg {
+  top: 28%;
+  left: 20%;
+}
+
+:host-context(.dark) .celestial-body__crater--sm {
+  bottom: 26%;
+  right: 16%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-title__typing {
+    width: auto;
+    animation: none;
+  }
+
+  .hero-title__typing::after {
+    display: none;
+  }
+
+  .celestial-track,
+  .celestial-body {
+    transition: none;
+    animation: none;
+  }
+
+  .celestial-body::after {
+    animation: none;
+  }
+}
